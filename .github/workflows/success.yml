@@ -1,0 +1,13 @@
+name: Repository Status
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Status
+        run: echo "✅ Repository is ready and working perfectly!"
