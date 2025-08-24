@@ -20,6 +20,13 @@ jobs:
           git config --global user.email "saadtoorx@example.com"
           git config --global user.name "saadtoorx"
 
+        - name: Check Hugging Face Token
+          run: |
+            if [ -z "${{ secrets.HF_TOKEN }}" ]; then
+              echo "Hugging Face token not found!"
+              exit 1
+            fi
+
       - name: Push to Hugging Face
         run: |
           git remote remove hf || true
