@@ -1,13 +1,17 @@
 name: Deploy to Hugging Face Spaces
 
+# Workflow disabled - uncomment to enable when HF_TOKEN is configured
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:  # Manual trigger only
+  # push:
+  #   branches:
+  #     - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # Only run if HF_TOKEN is available
+    if: ${{ secrets.HF_TOKEN != '' }}
 
     steps:
       - name: Checkout full repository history
@@ -21,7 +25,13 @@ jobs:
           git config --global user.name "saadtoorx"
 
       - name: Push to Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
+          if [ -z "$HF_TOKEN" ]; then
+            echo "HF_TOKEN is not set. Please add it to GitHub Secrets."
+            exit 1
+          fi
           git remote remove hf || true
-          git remote add hf https://saadtoorx:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/saadtoorx/multi-agent-job-application-Crew
+          git remote add hf https://saadtoorx:$HF_TOKEN@huggingface.co/spaces/saadtoorx/multi-agent-job-application-Crew
           git push hf main --force
