@@ -229,24 +229,35 @@ def main():
             st.write("Set your API keys below to enable the AI agents.")
             
             # API Key Configuration
-            openai_api_key = st.text_input("OpenAI API Key", type="password", placeholder="Enter your OpenAI API key here", help="Enter your OpenAI API key")
+            openai_api_key = st.text_input("OpenAI API Key", type="password", placeholder="sk-...", help="Enter your OpenAI API key")
             serper_api_key = st.text_input("Serper API Key", type="password", placeholder="Your Serper API key", help="Enter your Serper API key for web search")
+            
+            # Show current configuration status
+            if st.session_state.api_keys_configured:
+                st.success("✅ API keys are currently configured!")
             
             # Add button to confirm API key configuration
             if st.button("Connect API Keys", use_container_width=True, type="primary", key="connect_api_button"):
                 if not openai_api_key or not serper_api_key:
-                    # st.error("❌ Please enter both API keys to proceed.")
+                    st.error("❌ Please enter both API keys to proceed.")
+                    st.session_state.api_keys_configured = False
+                elif len(openai_api_key.strip()) < 10 or len(serper_api_key.strip()) < 10:
+                    st.error("❌ API keys seem too short. Please check and try again.")
                     st.session_state.api_keys_configured = False
                 else:
+                    # Set environment variables first
+                    os.environ["OPENAI_API_KEY"] = openai_api_key.strip()
+                    os.environ["OPENAI_MODEL_NAME"] = "gpt-4o-mini"
+                    os.environ["SERPER_API_KEY"] = serper_api_key.strip()
+                    
+                    # Then update session state
                     st.session_state.api_keys_configured = True
                     st.success("✅ API keys configured successfully!")
                     
-                    # Set environment variables
-                    os.environ["OPENAI_API_KEY"] = openai_api_key
-                    os.environ["OPENAI_MODEL_NAME"] = "gpt-4o-mini"
-                    os.environ["SERPER_API_KEY"] = serper_api_key
-                    
-                    st.rerun()  # Refresh to show the main application
+                    # Add a small delay and force rerun
+                    import time
+                    time.sleep(0.1)
+                    st.rerun()
 
         st.markdown("---")
         
