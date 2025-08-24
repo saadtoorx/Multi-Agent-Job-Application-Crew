@@ -1,9 +1,11 @@
 name: Deploy to Hugging Face Spaces
 
+# Workflow disabled - uncomment 'push:' section to enable when HF_TOKEN is configured
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:  # Manual trigger only
+  # push:
+  #   branches:
+  #     - main
 
 jobs:
   deploy:
