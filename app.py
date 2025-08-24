@@ -10,6 +10,14 @@ from agents import create_agents
 from tasks import agent_tasks
 from app_utils import enter_and_set_api_keys, pretty_print_result
 
+# Load environment variables from .env file if it exists
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+    DOTENV_AVAILABLE = True
+except ImportError:
+    DOTENV_AVAILABLE = False
+
 # Optional imports with fallbacks
 try:
     import PyPDF2
@@ -104,7 +112,16 @@ st.markdown("""
 
 # Initialize session state
 if 'api_keys_configured' not in st.session_state:
-    st.session_state.api_keys_configured = False
+    # Check if API keys are already available in environment
+    openai_key = os.getenv('OPENAI_API_KEY', '')
+    serper_key = os.getenv('SERPER_API_KEY', '')
+    
+    if openai_key and serper_key and len(openai_key) > 10 and len(serper_key) > 10:
+        st.session_state.api_keys_configured = True
+        os.environ["OPENAI_MODEL_NAME"] = "gpt-4o-mini"
+    else:
+        st.session_state.api_keys_configured = False
+
 if 'resume_content' not in st.session_state:
     st.session_state.resume_content = ""
 if 'resume_uploaded' not in st.session_state:
@@ -225,19 +242,37 @@ def main():
     with st.sidebar:
         st.markdown("### ⚙️ Configuration")
 
-        with st.expander("🔑 API Key Configuration", expanded=True):
+        with st.expander("🔑 API Key Configuration", expanded=not st.session_state.api_keys_configured):
             st.write("Set your API keys below to enable the AI agents.")
             
-            # API Key Configuration
-            openai_api_key = st.text_input("OpenAI API Key", type="password", placeholder="sk-...", help="Enter your OpenAI API key")
-            serper_api_key = st.text_input("Serper API Key", type="password", placeholder="Your Serper API key", help="Enter your Serper API key for web search")
+            # Get existing keys from environment
+            existing_openai = os.getenv('OPENAI_API_KEY', '')
+            existing_serper = os.getenv('SERPER_API_KEY', '')
             
             # Show current configuration status
             if st.session_state.api_keys_configured:
-                st.success("✅ API keys are currently configured!")
+                st.success("✅ API keys are currently configured and ready to use!")
+                st.info("🔄 You can update the keys below if needed.")
+            
+            # API Key Configuration
+            openai_api_key = st.text_input(
+                "OpenAI API Key", 
+                type="password", 
+                placeholder="sk-..." if not existing_openai else "••••••••••••••••••••••••••••••••••••••••••••••••••••", 
+                help="Enter your OpenAI API key",
+                value=existing_openai if existing_openai else ""
+            )
+            serper_api_key = st.text_input(
+                "Serper API Key", 
+                type="password", 
+                placeholder="Your Serper API key" if not existing_serper else "••••••••••••••••••••••••••••••••••••••••••••••••••••", 
+                help="Enter your Serper API key for web search",
+                value=existing_serper if existing_serper else ""
+            )
             
             # Add button to confirm API key configuration
-            if st.button("Connect API Keys", use_container_width=True, type="primary", key="connect_api_button"):
+            button_text = "Update API Keys" if st.session_state.api_keys_configured else "Connect API Keys"
+            if st.button(button_text, use_container_width=True, type="primary", key="connect_api_button"):
                 if not openai_api_key or not serper_api_key:
                     st.error("❌ Please enter both API keys to proceed.")
                     st.session_state.api_keys_configured = False
