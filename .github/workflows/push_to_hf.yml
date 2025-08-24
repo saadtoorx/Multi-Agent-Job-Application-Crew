@@ -1,10 +1,9 @@
 name: Deploy to Hugging Face Spaces
 
-# Disabled - uncomment and configure HF_TOKEN secret to enable
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   deploy:
