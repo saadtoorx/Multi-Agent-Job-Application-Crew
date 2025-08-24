@@ -17,7 +17,7 @@ tags:
   - nlp
   - career-optimization
   - ats-optimization
-short_description: Advanced multi-agent AI system for strategic job application optimization and interview mastery
+short_description: Multi-agent AI for job application and interview optimization
 ---
 
 # Elite AI Career Intelligence System 💼
