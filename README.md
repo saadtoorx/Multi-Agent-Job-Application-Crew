@@ -1,5 +1,5 @@
 ---
-title: Elite AI Career Intelligence System
+title: Multi Agent Job Application Crew
 emoji: 💼
 colorFrom: blue
 colorTo: purple
@@ -20,7 +20,7 @@ tags:
 short_description: AI-powered job application & interview optimization
 ---
 
-# Elite AI Career Intelligence System 💼
+# Multi Agent Job Application Crew 💼
 An elite AI-powered career intelligence system that uses advanced multi-agent artificial intelligence to strategically optimize job applications while maintaining 100% authenticity and providing comprehensive interview preparation.
 
 ## 🌟 Elite Features
@@ -56,7 +56,7 @@ You'll need API keys for:
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd elite-ai-career-intelligence
+cd multi-agent-job-application-crew
 ```
 
 2. Install dependencies:
@@ -137,11 +137,11 @@ git clone https://huggingface.co/spaces/YOUR_USERNAME/YOUR_SPACE_NAME
 cd YOUR_SPACE_NAME
 
 # Copy application files
-cp /path/to/elite-ai-career-intelligence/* .
+cp /path/to/multi-agent-job-application-crew/* .
 
 # Add and commit
 git add .
-git commit -m "Deploy Elite AI Career Intelligence System"
+git commit -m "Deploy multi-agent-job-application-crew"
 git push
 ```
 
@@ -161,9 +161,9 @@ The system will not operate without these keys, ensuring users provide their own
 ## 📁 Project Structure
 
 ```
-elite-ai-career-intelligence/
-├── app.py              # Elite AI Career Intelligence System interface
-├── agents.py           # Elite AI specialist agent definitions
+multi-agent-job-application-crew/
+├── app.py              # Multi Agent Job Application Crew System interface
+├── agents.py           # Multi Agent Job Application Crew definitions
 ├── tasks.py            # Advanced task definitions for strategic optimization
 ├── tools.py            # Advanced tool configurations and capabilities
 ├── app_utils.py        # Utility functions for system operations
@@ -171,7 +171,7 @@ elite-ai-career-intelligence/
 └── README.md          # Complete system documentation
 ```
 
-## 🎯 How The Elite System Works
+## 🎯 How The Application Crew System Works
 
 1. **Deep Job Intelligence Analysis**: The Elite Job Requirements Intelligence Analyst conducts comprehensive analysis of job postings, extracting precise requirements, company culture indicators, and strategic keywords with unspoken priority detection
 

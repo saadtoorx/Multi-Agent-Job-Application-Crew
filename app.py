@@ -27,7 +27,7 @@ warnings.filterwarnings('ignore')
 
 # Page Configuration
 st.set_page_config(
-    page_title="Elite AI Career Intelligence System",
+    page_title="Multi Agent Job Application Crew",
     page_icon="💼",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -218,7 +218,7 @@ def run_job_application_crew(job_url, github_url, personal_writeup, resume_path)
 
 def main():
     # Header
-    st.markdown('<h1 class="main-header">💼 Elite AI Career Intelligence System</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">💼 Multi Agent Job Application Crew</h1>', unsafe_allow_html=True)
     st.markdown('<p class="sub-header">Advanced Multi-Agent AI for Strategic Job Application Optimization & Interview Mastery</p>', unsafe_allow_html=True)
 
     # Sidebar for configuration and agent info
@@ -269,7 +269,7 @@ def main():
         
         
         # Agent Information
-        with st.expander("🤖 Elite AI Agents & 🛠️ Advanced Tools", expanded=False):
+        with st.expander("🤖 AI Agents & 🛠️ Advanced Tools", expanded=False):
             st.markdown("""
             **Elite AI Specialist Agents:**
             - **🔍 Job Requirements Intelligence Analyst**: Deep-dive analysis of job postings with precision requirement extraction
