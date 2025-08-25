@@ -228,12 +228,6 @@ def main():
         with st.expander("🔑 API Key Configuration", expanded=True):
             st.write("Set your API keys below to enable the AI agents.")
             
-            # Show current configuration status
-            if st.session_state.api_keys_configured:
-                st.success("✅ API keys are currently configured and ready to use!")
-                # Debug info
-                st.info("🔧 Debug: Session state shows keys are configured. If you're still seeing this page, try refreshing your browser.")
-            
             # API Key Configuration - Always empty for manual input
             openai_api_key = st.text_input(
                 "OpenAI API Key", 
@@ -252,12 +246,6 @@ def main():
             if st.button("Connect API Keys", use_container_width=True, type="primary", key="connect_api_button"):
                 if not openai_api_key or not serper_api_key:
                     st.error("❌ Please enter both API keys to proceed.")
-                    st.session_state.api_keys_configured = False
-                elif len(openai_api_key.strip()) < 20:  # More realistic minimum length for OpenAI keys
-                    st.error("❌ OpenAI API key seems too short. Please check and try again.")
-                    st.session_state.api_keys_configured = False
-                elif len(serper_api_key.strip()) < 10:
-                    st.error("❌ Serper API key seems too short. Please check and try again.")
                     st.session_state.api_keys_configured = False
                 else:
                     # Set environment variables for this session
