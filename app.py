@@ -27,7 +27,7 @@ warnings.filterwarnings('ignore')
 
 # Page Configuration
 st.set_page_config(
-    page_title="AI-Powered Job Application Assistant",
+    page_title="Elite AI Career Intelligence System",
     page_icon="💼",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -231,6 +231,8 @@ def main():
             # Show current configuration status
             if st.session_state.api_keys_configured:
                 st.success("✅ API keys are currently configured and ready to use!")
+                # Debug info
+                st.info("🔧 Debug: Session state shows keys are configured. If you're still seeing this page, try refreshing your browser.")
             
             # API Key Configuration - Always empty for manual input
             openai_api_key = st.text_input(
@@ -251,8 +253,11 @@ def main():
                 if not openai_api_key or not serper_api_key:
                     st.error("❌ Please enter both API keys to proceed.")
                     st.session_state.api_keys_configured = False
-                elif len(openai_api_key.strip()) < 10 or len(serper_api_key.strip()) < 10:
-                    st.error("❌ API keys seem too short. Please check and try again.")
+                elif len(openai_api_key.strip()) < 20:  # More realistic minimum length for OpenAI keys
+                    st.error("❌ OpenAI API key seems too short. Please check and try again.")
+                    st.session_state.api_keys_configured = False
+                elif len(serper_api_key.strip()) < 10:
+                    st.error("❌ Serper API key seems too short. Please check and try again.")
                     st.session_state.api_keys_configured = False
                 else:
                     # Set environment variables for this session
@@ -262,9 +267,11 @@ def main():
                     
                     # Update session state
                     st.session_state.api_keys_configured = True
-                    st.success("✅ API keys configured successfully!")
                     
-                    # Force rerun to show the main application
+                    # Show success message
+                    st.success("✅ API keys configured successfully! Refreshing interface...")
+                    
+                    # Use st.rerun() to refresh the page
                     st.rerun()
 
         st.markdown("---")
