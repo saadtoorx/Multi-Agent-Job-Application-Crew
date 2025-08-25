@@ -8,7 +8,7 @@ from crewai import Crew
 
 from agents import create_agents
 from tasks import agent_tasks
-from app_utils import enter_and_set_api_keys, pretty_print_result
+from app_utils import pretty_print_result
 
 # Optional imports with fallbacks
 try:
@@ -226,40 +226,43 @@ def main():
         st.markdown("### ⚙️ Configuration")
 
         with st.expander("🔑 API Key Configuration", expanded=True):
-            st.write("Set your API keys below to enable the AI agents.")
-            
-            # API Key Configuration - Always empty for manual input
-            openai_api_key = st.text_input(
-                "OpenAI API Key", 
-                type="password", 
-                placeholder="sk-...", 
-                help="Enter your OpenAI API key"
-            )
-            serper_api_key = st.text_input(
-                "Serper API Key", 
-                type="password", 
-                placeholder="Your Serper API key", 
-                help="Enter your Serper API key for web search"
-            )
-            
-            # Add button to confirm API key configuration
-            if st.button("Connect API Keys", use_container_width=True, type="primary", key="connect_api_button"):
-                if not openai_api_key or not serper_api_key:
-                    st.error("❌ Please enter both API keys to proceed.")
+            if not st.session_state.api_keys_configured:
+                st.write("Set your API keys below to enable the AI agents.")
+                
+                # API Key Configuration - Always empty for manual input
+                openai_api_key = st.text_input(
+                    "OpenAI API Key", 
+                    type="password", 
+                    placeholder="sk-...", 
+                    help="Enter your OpenAI API key"
+                )
+                serper_api_key = st.text_input(
+                    "Serper API Key", 
+                    type="password", 
+                    placeholder="Your Serper API key", 
+                    help="Enter your Serper API key for web search"
+                )
+                
+                # Add button to confirm API key configuration
+                if st.button("Connect API Keys", use_container_width=True, type="primary", key="connect_api_button"):
+                    if not openai_api_key or not serper_api_key:
+                        st.error("❌ Please enter both API keys to proceed.")
+                    else:
+                        # Set environment variables for this session
+                        os.environ["OPENAI_API_KEY"] = openai_api_key.strip()
+                        os.environ["OPENAI_MODEL_NAME"] = "gpt-4o-mini"
+                        os.environ["SERPER_API_KEY"] = serper_api_key.strip()
+                        
+                        # Update session state
+                        st.session_state.api_keys_configured = True
+                        
+                        # Show success message and rerun
+                        st.success("✅ API keys configured successfully!")
+                        st.rerun()
+            else:
+                st.success("✅ API keys are configured and ready!")
+                if st.button("🔄 Reset API Keys", use_container_width=True, key="reset_api_button"):
                     st.session_state.api_keys_configured = False
-                else:
-                    # Set environment variables for this session
-                    os.environ["OPENAI_API_KEY"] = openai_api_key.strip()
-                    os.environ["OPENAI_MODEL_NAME"] = "gpt-4o-mini"
-                    os.environ["SERPER_API_KEY"] = serper_api_key.strip()
-                    
-                    # Update session state
-                    st.session_state.api_keys_configured = True
-                    
-                    # Show success message
-                    st.success("✅ API keys configured successfully! Refreshing interface...")
-                    
-                    # Use st.rerun() to refresh the page
                     st.rerun()
 
         st.markdown("---")
